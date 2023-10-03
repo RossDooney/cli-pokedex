@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func callbackHelp(){
+func callbackHelp() error{
 	fmt.Println("Welcome to the help menu")
 	fmt.Println("Your available commands are:")
 	availableCommands := getCommands()
@@ -10,4 +10,5 @@ func callbackHelp(){
 		fmt.Printf(" - %s: %s\n",cmd.name, cmd.description)
 	}
 	fmt.Println("")
+	return nil
 }
