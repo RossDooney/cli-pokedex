@@ -1,32 +1,39 @@
 package pokeapi
 
 import (
+	"encoding/json"
+	"io"
 	"net/http"
-	"fmt"
-	"os"
 )
 
-func (c *Client) ListLocationAreas() (LocationAreaResp, error){
-	endpoint := "/location-area"
-	fullURL := baseURL + endpoint
-
-	req, err := http.NewRequest("GET", fullURL, nil)
-	if err != nil{
-		return LocationAreaResp{}, err
+// ListLocations -
+func (c *Client) ListLocations(pageURL *string) (RespShallowLocations, error) {
+	url := baseURL + "/location-area"
+	if pageURL != nil {
+		url = *pageURL
 	}
-	
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return RespShallowLocations{}, err
+	}
+
 	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return RespShallowLocations{}, err
+	}
+	defer resp.Body.Close()
 
-	if err != nil{
-		return LocationAreaResp{}, err
+	dat, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return RespShallowLocations{}, err
 	}
 
-	defer resp.body.Close()
-
-	if resp.StatusCode > 399{
-		return LocationAreaResp{}, fmt.Println("Bad Status code %v", resp.StatusCode)
+	locationsResp := RespShallowLocations{}
+	err = json.Unmarshal(dat, &locationsResp)
+	if err != nil {
+		return RespShallowLocations{}, err
 	}
 
-	io.ReadAll(resp.body)
-
+	return locationsResp, nil
 }

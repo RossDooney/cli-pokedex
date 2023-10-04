@@ -1,11 +1,11 @@
 package pokeapi
 
 type LocationAreaResp struct {
-	Count    int    
-	Next     *string 
-	Previous *string    
+	Count    int
+	Next     *string
+	Previous *string
 	Results  []struct {
-		Name string 
-		URL  string 
-	} 
+		Name string
+		URL  string
+	}
 }
