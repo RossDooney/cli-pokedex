@@ -1,28 +1,28 @@
 package main
 
-import(
+import (
+	"bufio"
 	"fmt"
 	"os"
-	"bufio"
 	"strings"
 )
 
-func startRepl(){
+func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
-	for{
+	for {
 
 		fmt.Print(" > ")
 		scanner.Scan()
 		text := scanner.Text()
 		clearned := cleanInput(text)
-		if len(clearned) == 0{
+		if len(clearned) == 0 {
 			continue
 		}
 		commandName := clearned[0]
 		availableCommands := getCommands()
 
 		command, ok := availableCommands[commandName]
-		if !ok{
+		if !ok {
 			fmt.Println("Invalid command")
 			continue
 		}
@@ -32,28 +32,27 @@ func startRepl(){
 }
 
 type cliCommand struct {
-	name string
+	name        string
 	description string
-	callback func() error
+	callback    func() error
 }
 
-func getCommands() map[string]cliCommand{
+func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
-		"help":{
-			name: "help",
+		"help": {
+			name:        "help",
 			description: "Print help menu",
-			callback: callbackHelp,
+			callback:    callbackHelp,
 		},
-		"exit":{
-			name: "exit",
+		"exit": {
+			name:        "exit",
 			description: "Closes program",
-			callback: callbackExit,
+			callback:    callbackExit,
 		},
 	}
 }
 
-
-func cleanInput(str string) []string{
+func cleanInput(str string) []string {
 	lowered := strings.ToLower(str)
 	words := strings.Fields(lowered)
 	return words

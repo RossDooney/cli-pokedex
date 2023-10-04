@@ -2,9 +2,9 @@ package main
 
 import "testing"
 
-func TestCleanInput (t *testing.T) {
-	cases := []struct{
-		input string
+func TestCleanInput(t *testing.T) {
+	cases := []struct {
+		input    string
 		expected []string
 	}{
 		{
@@ -20,28 +20,27 @@ func TestCleanInput (t *testing.T) {
 		},
 
 		{
-			input:    "  hElLo WoRlD  ",
+			input: "  hElLo WoRlD  ",
 			expected: []string{
 				"hello",
 				"world",
 			},
 		},
-	}	
-	for _, cs := range cases{
+	}
+	for _, cs := range cases {
 		actual := cleanInput(cs.input)
-		if len(actual) != len(cs.expected){
+		if len(actual) != len(cs.expected) {
 			t.Errorf("Lengths not equal")
 			continue
 		}
 
-		for i := range actual{
+		for i := range actual {
 			actualWord := actual[i]
 			expectedWord := cs.expected[i]
-			if actualWord != expectedWord{
+			if actualWord != expectedWord {
 				t.Errorf("%v does not equal %v",
-				actualWord,expectedWord,)
+					actualWord, expectedWord)
 			}
 		}
 	}
 }
-

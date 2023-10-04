@@ -17,6 +17,8 @@ func (c *Client) ListLocationAreas() (LocationAreaResp, error) {
 
 	resp, err := c.httpClient.Do(req)
 
+	defer resp.Body.Close()
+
 	if err != nil {
 		return LocationAreaResp{}, err
 	}
