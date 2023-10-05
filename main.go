@@ -9,9 +9,9 @@ type config struct {
 }
 
 func main() {
-	cfg := config{
+	cfg := &config{
 		pokeapiClient: pokeapi.NewClient(),
 	}
 
-	startRepl(&cfg)
+	startRepl(cfg)
 }

@@ -1,23 +1,41 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"log"
-
-	"github.com/RossDooney/cli-pokedex/internal/pokeapi"
 )
 
 func callbackMap(cfg *config) error {
-	pokeapiClient := pokeapi.NewClient()
-	resp, err := pokeapiClient.ListLocationAreas()
+	resp, err := cfg.pokeapiClient.ListLocationAreas(cfg.nextLocationAreaUrl)
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	fmt.Println("Location Areas: ")
 	for _, area := range resp.Results {
 		fmt.Printf(" - %s \n", area.Name)
 	}
+	cfg.nextLocationAreaUrl = resp.Next
+	cfg.previousLocationAreaUrl = resp.Previous
+	return nil
+
+}
+
+func callbackMapBack(cfg *config) error {
+	if cfg.previousLocationAreaUrl == nil {
+		return errors.New("You're on the first page")
+	}
+	resp, err := cfg.pokeapiClient.ListLocationAreas(cfg.previousLocationAreaUrl)
+
+	if err != nil {
+		return err
+	}
+	fmt.Println("Location Areas: ")
+	for _, area := range resp.Results {
+		fmt.Printf(" - %s \n", area.Name)
+	}
+	cfg.nextLocationAreaUrl = resp.Next
+	cfg.previousLocationAreaUrl = resp.Previous
 	return nil
 
 }
