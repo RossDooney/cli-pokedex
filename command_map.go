@@ -7,7 +7,7 @@ import (
 	"github.com/RossDooney/cli-pokedex/internal/pokeapi"
 )
 
-func callbackMap() error {
+func callbackMap(cfg *config) error {
 	pokeapiClient := pokeapi.NewClient()
 	resp, err := pokeapiClient.ListLocationAreas()
 
@@ -16,7 +16,7 @@ func callbackMap() error {
 	}
 	fmt.Println("Location Areas: ")
 	for _, area := range resp.Results {
-		fmt.Println(" - %s \n", area.Name)
+		fmt.Printf(" - %s \n", area.Name)
 	}
 	return nil
 
